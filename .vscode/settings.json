@@ -2,5 +2,6 @@
     "cSpell.words": [
         "echarts",
         "skyblue"
-    ]
+    ],
+    "git.ignoreLimitWarning": true
 }
