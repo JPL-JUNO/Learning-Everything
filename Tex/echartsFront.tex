@@ -1,0 +1,209 @@
+\chapter{Echarts + Vue}
+\section{图标相关的基本配置}
+\begin{itemize}
+    \item \verb|xAxis|: 直角坐标系 中的 x 轴, 如果 type 属性的值为 category ,那么需要配置 data 数据, 代表在 x 轴的呈现
+    \item \verb|yAxis|: 直角坐标系 中的 y 轴, 如果 type 属性配置为 value , 那么无需配置 data , 此时 y 轴会自动去 series 下找数据进行图表的绘制
+    \item \verb|series|: 系列列表。每个系列通过 type 决定自己的图表类型, data 来设置每个系列的数据
+\end{itemize}
+
+更多配置项可以参考\href{https://echarts.apache.org/zh/option.html#title}{Echarts官方文档}。
+
+\section{基础图标}
+\subsection{柱状图}
+常见的效果：
+\begin{itemize}
+    \item 标记（最大值markPoint、最小值markPoint、平均值markLine）
+    \item 显示（数值显示label、柱宽度barWidth、横向柱状图）
+\end{itemize}
+\subsection{通用配置}
+\paragraph{标题title} 用于设置图标的标题，主要包括标题文字、颜色、边框、边框圆角、位置
+\paragraph{提示框tooltip} 用于配置鼠标或点击图标时的显示框。
+\begin{enumerate}
+    \item 触发类型：trigger，主要用两个可选值：item、axis
+    \item 触发时机：triggerOn
+    \item 格式化：formatter
+\end{enumerate}
+\paragraph{工具按钮toolbox} Echarts提供的工具栏：内置有导出图片saveAsImage、数据视图dataView、动态类型切换magicType、数据区域缩放dataZoom、重置restore五个工具。
+
+\begin{itemize}
+    \item legend 中的 data 是一个数组
+    \item legend 中的 data 的值需要和 series 数组中某组数据的 name 值一致
+\end{itemize}
+\paragraph{图例legend} 图例，用于筛选系列，需要配合series使用
+
+\subsection{折线图}
+常见效果：
+\begin{itemize}
+    \item 标记（最大值markPoint、最小值markPoint、平均值markLine、标注区间markArea）
+    \item 线条控制（平滑smooth、样式lineStyle）
+    \item 填充风格areaStyle、紧挨边缘boundaryGap
+    \item 缩放脱离0值的比例
+\end{itemize}
+
+\subsection{散点图}
+数据应该是一个二维数组
+
+常见效果：
+\begin{itemize}
+    \item 气泡图效果：散点的大小symbolSize、散点的颜色itemStyle.color
+    \item 涟漪动画效果：\verb|type: effectScatter|, \verb|showEffectOn: "emphasis"|, \verb|rippleEffect|
+\end{itemize}
+\subsection{直接坐标系的常用配置}
+这叫坐标系的常见图表： 柱状图、折线图、散点图。
+
+\begin{enumerate}
+    \item 网格grid: show, borderWidth, borderColor, top, left, right, bottom, height, width;
+    \item 坐标轴: 坐标轴分为x轴和y轴, 一个 grid 中最多有两种位置的 x 轴和 y 轴.
+    \begin{itemize}
+        \item 坐标轴类型 type: value : 数值轴, 自动会从目标数据中读取数据, 如果是category : 类目轴, 该类型必须通过 data 设置类目数据
+        \item 坐标轴位置: xAxis :  ["top", "bottom"], yAxis : ["left", "right"]
+    \end{itemize}
+    \item 区域缩放dataZoom：用与区域缩放，对数据范围进行过滤，$x$轴和$y$轴都可以拥有，dataZoom接收一个数组，因此可以配置多个区域缩放器。
+    \begin{itemize}
+        \item 类型type：slider：滑块，inside，默认，依靠鼠标滚轮或者双指缩放；
+        \item 指标产生作用的轴：xAxisIndex:设置缩放组件控制的是哪个x轴，一般写0即可，yAxisIndex同理；
+        \item 指明初始状态的缩放情况：start:数据窗口范围的只是百分比，end:数据窗口范围的结束百分比；
+    \end{itemize}
+\end{enumerate}
+
+\subsection{饼图}
+饼图的数据是由 name 和 value 组成的字典所形成的数组，饼图无须配置 xAxis 和 yAxis。
+
+常见效果：
+\begin{itemize}
+    \item 显示数值：\verb|label.formatter|
+    \item 圆环：设置两个半径~\verb|radius: ["50%", "70%"]|
+    \item 南丁格尔图：南丁格尔图指的是每一个扇形的半径随着数据的大小而不同, 数值占比越大, 扇形的半径也就越大~\verb|roseType: "radius"|
+    \item 选中效果: 
+    \begin{itemize}
+        \item \verb|selectedMode: ["multiple", "single"]|
+        \item \verb|selectedOffset: 30|
+    \end{itemize}
+\end{itemize}
+
+\subsection{地图}
+\begin{enumerate}
+    \item ECharts 最基本的代码结构
+    \item 准备中国的矢量 json 文件, 放到 json/map/ 目录之下
+    \item 使用 Ajax 获取 china.json
+    \item 在Ajax的回调函数中, 往 echarts 全局对象注册地图的 json 数据 echarts.registerMap('chinaMap', chinaJson)
+    \item 获取完数据之后, 需要配置 geo 节点, 再次的 setOption
+\end{enumerate}
+
+常见配置：缩放拖动: roam，名称显示: label，初始缩放比例: zoom，地图中心点: center
+
+常见效果：
+\begin{itemize}
+    \item 显示某个区域：
+    \begin{enumerate}
+        \item 准备安徽省的矢量地图数据
+        \item 加载安徽省地图的矢量数据
+        \item 在Ajax的回调函数中注册地图矢量数据
+        \item 配置 geo 的 type:'map' , map:'anhui'
+        \item 通过 zoom 调整缩放比例
+        \item 通过 center 调整中心点
+    \end{enumerate}
+    \item 不同城市显示不同颜色
+    \begin{enumerate}
+        \item 显示基本的中国地图
+        \item 准备好城市空气质量的数据, 并且将数据设置给 series
+        \item 将 series 下的数据和 geo 关联起来
+        \item 结合 visualMap 配合使用：visualMap 是视觉映射组件, 和之前区域缩放 dataZoom 很类似, 可以做数据的过滤. 只不过 dataZoom 主要使用在直角坐标系的图表, 而 visualMap 主要使用在地图或者饼图中
+    \end{enumerate}
+    \item 地图和散点图结合
+\end{itemize}
+\paragraph{地图和散点图结合}
+\begin{enumerate}
+    \item 给 series 这个数组下增加新的对象
+    \item 准备好散点数据,设置给新对象的 data
+    \item 配置新对象的 type：\verb|type:effectScatter|
+    \item 让散点图使用地图坐标系统\verb|coordinateSystem: "geo"|
+    \item 让涟漪的效果更加明显
+\end{enumerate}
+
+\subsection{雷达图}
+\paragraph{实现步骤}
+\begin{enumerate}
+    \item ECharts 最基本的代码结构: 引入JS文件、DOM容器、初始化对象、设置Option
+    \item 定义各个维度的最大值：
+    \item 准备具体产品的数据：
+    \item 
+\end{enumerate}
+
+\paragraph{常用配置}
+\begin{itemize}
+    \item 显示数值：\verb|label.show: true|
+    \item 区域面积：\verb|reaStyle: {}|
+    \item 绘制类型：\verb|shape: "circle"|
+\end{itemize}
+
+\subsection{仪表盘}
+仪表盘主要使用在进度把控以及数据范围的监控。
+\paragraph{实现步骤}
+\begin{enumerate}
+    \item ECharts 最基本的代码结构: 引入JS文件、DOM容器、初始化对象、设置Option
+    \item 准备数据, 设置给 series 下的 data
+    \item 在 series 下设置 type:gauge
+\end{enumerate}
+\paragraph{常用效果}
+\begin{itemize}
+    \item 显示数值：\verb|label.show: true|
+    \item 区域面积：\verb|reaStyle: {}|
+    \item 绘制类型：\verb|shape: "circle"|
+\end{itemize}
+
+\section{ECharts高级}
+\subsection{显示相关}
+\subsubsection{主题}
+ECharts 中默认内置了两套主题: light、dark，在初始化对象方法 init 中可以指明。
+\begin{js}
+var myChart = echarts.init(document.querySelector("div"), "light");
+var myChart = echarts.init(document.querySelector("div"), "shine");
+\end{js}
+\subsubsection{调色板}
+它是一组颜色，图形、系列会自动从其中选择颜色, 不断的循环从头取到尾, 再从头取到尾, 如此往复。有主题调色盘、全局调色盘(将覆盖主题调色盘)、局部调色盘(将覆盖全局调色盘)
+
+颜色渐变：线性渐变itemStyle、径向渐变
+\begin{js}
+color: {
+    type: "radial", // 径向渐变
+    // x, y, r都为相对值
+    x: 0.5,
+    y: 0.5,
+    r: 1,
+    colorStops: [
+        { offset: 0, color: "red" },
+        { offset: 1, color: "green" },
+    ],
+},
+\end{js}
+\subsubsection{样式}
+直接样式(itemStyle, textStyle, lineStyle, areaStyle, label)
+
+高亮样式(emphasis中包裹itemStyle, textStyle, lineStyle, areaStyle, label)：图表中, 其实有很多元素都是有两种状态的, 一种是默认状态, 另外一种就是鼠标滑过或者点击形成的高亮状态. 而高亮样式是针对于元素的高亮状态设定的样式。
+\subsubsection{自适应}
+当浏览器的窗口大小发生变化的同时，需要图表的大小也随之适配变化。
+
+\begin{enumerate}
+    \item 监听窗口大小变化事件
+    \item 在事件处理函数中调用 ECharts 实例对象的 resize 即可
+\end{enumerate}
+\begin{js}
+window.onresize = function () {
+myChart.resize();
+};
+\end{js}
+\subsection{动画的使用}
+
+\subsubsection{加载动画}
+ECharts 已经内置好了加载数据的动画, 我们只需要在合适的时机显示或者隐藏即可。
+
+一般, 我们会在获取图表数据之前显示加载动画，主要是因为后台获取数据可能会需要一定的时间。
+\begin{itemize}
+    \item 显示加载动画\verb|myChart.showLoading()|
+    \item 隐藏加载动画\verb|myChart.hideLoading()|
+\end{itemize}
+
+\subsubsection{增量动画}
+\subsubsection{动画的配置}
+\subsection{交互API}
