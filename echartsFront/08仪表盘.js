@@ -26,7 +26,7 @@ var option = {
             color: "green",
           },
           title: {
-            offsetCenter: ["0%", "80%"],
+            offsetCenter: ["0%", "50%"],
           },
           detail: {
             offsetCenter: ["0%", "100%"],
