@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件修饰符</title>
+    <script src="../lib/vue.js"></script>
+    <style>
+        * {
+            margin-top: 10px;
+        }
+
+        .demo {
+            height: 50px;
+            background-color: aqua;
+        }
+
+        .box1 {
+            padding: 5px;
+            background-color: orange;
+        }
+
+        .box2 {
+            background-color: skyblue;
+        }
+
+        .list {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+            overflow: auto;
+        }
+
+        li {
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <h1>Hello, {{ name }}</h1>
+        <a href="http://www.apple.com.cn" @click.prevent="showInfo">Click for hint information</a>
+        <div class="demo" @click="showInfo">
+            <button @click.stop="showInfo">Click for hint information</button>
+        </div>
+        <!-- once  -->
+        <button @click.once="showInfo">Click for hint information</button>
+        <!-- capture -->
+        <div class="box1" @click.capture="showMsg('Vue2')">
+            Vue2
+            <div class="box2" @click="showMsg('Vue3')">
+                Vue3
+            </div>
+        </div>
+
+        <!-- self -->
+        <div class="demo" @click.self="showInfo">
+            <button @click="showInfo">Click for hint information</button>
+        </div>
+        <!-- <div @scroll="demo" class="list"> -->
+        <div @wheel.passive="demo" class="list">
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+
+</body>
+<script>
+    new Vue({
+        el: "#root",
+        data: {
+            name: 'Vue2-3'
+        },
+        methods: {
+            showInfo(param) {
+                // param.preventDefault();
+                // param.stopPropagation();
+                alert('Hello, Vue2');
+                console.log(param.target)
+            },
+            showMsg(Msg) {
+                console.log(Msg)
+            },
+            demo() {
+                for (var i = 0; i < 1000; i++) {
+                    console.log('#')
+                }
+                console.log('@')
+            }
+        }
+    })
+</script>
+
+</html>

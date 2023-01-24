@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初始Vue</title>
+    <script type="text/javascript" src="../lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>插值语法</h1>
+        <h3>Hello, {{name}}</h3>
+        <h1>指令语法</h1>
+        <a v-bind:href="url">点击去官网1</a>
+        <a :href="url">点击去官网2</a>
+    </div>
+    <script type="text/javascript">
+        new Vue({
+            el: '#root', // el用于指定当前Vue实例为哪个容器服务，值通常是CSS选择器字符串
+            // el: document.getElementById('root')
+            data: { // data用于存储数据，数据供el指定的容器使用，暂时先写成一个对象
+                name: 'Vue2',
+                url: 'https://www.apple.com.cn/'
+            }
+        })
+    </script>
+</body>
+
+</html>

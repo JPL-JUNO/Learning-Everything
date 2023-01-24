@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>监视属性简写形式</title>
+    <script src="../lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>Hello, {{ name }}</h1>
+        <h2>今天天气很{{ info }}</h2>
+        <button @click="changeWeather">切换天气</button>
+
+    </div>
+
+
+</body>
+<script>
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            name: '监视属性',
+            isHot: true,
+        },
+        computed: {
+            info() {
+                return this.isHot ? 'Hot' : 'Cool'
+            }
+        },
+        methods: {
+            changeWeather() {
+                this.isHot = !this.isHot;
+            }
+        },
+        watch: {
+            isHot: {
+                handler(newValue, oldValue) {
+                    console.log('isHot被修改了', newValue, oldValue)
+                }
+            },
+        }
+    })
+</script>
+
+</html>
