@@ -37,11 +37,15 @@
             }
         },
         watch: {
-            isHot: {
+            isHot(newValue, oldValue) {
+                console.log('isHot was modified', newValue, oldValue)
+            },
+            /* isHot: {
                 handler(newValue, oldValue) {
-                    console.log('isHot被修改了', newValue, oldValue)
+                    console.log('isHot was modified', newValue, oldValue)
                 }
             },
+            */
         }
     })
 </script>

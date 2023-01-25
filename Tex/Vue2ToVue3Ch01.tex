@@ -99,7 +99,7 @@ Vue未提供别名的按键，可以使用按键原始的key值去绑定，但�
     })
 </script>
 \end{html}
-\section{计算属性与监视属性}
+\section{计算属性与侦听属性}
 \subsection{计算属性}
 需要使用的属性不存在，要通过vm实例已有的属性（Property）计算得来，底层借助了\verb|Object.defineproperty|方法提供的\verb|getter|与\verb|setter|。
 
@@ -141,8 +141,8 @@ computed: {
     }
 }
 \end{js}
-\subsection{监视属性}
-监视属性（watch），当被监视的属性变化时, 回调函数自动调用, 进行相关操作，监视的属性必须存在，才能进行监视。监视有2种写法：
+\subsection{侦听属性}
+侦听属性（watch），当被侦听的属性变化时, 回调函数自动调用, 进行相关操作，侦听的属性必须存在，才能进行侦听。侦听有2种写法：
 \begin{enumerate}
     \item new Vue时传入watch配置
     \begin{js}
@@ -150,17 +150,17 @@ watch: {
     isHot: {
         immediate: true,
         handler(newValue, oldValue) {
-            console.log('isHot was moidified', newValue, oldValue)
+            console.log('isHot was modified', newValue, oldValue)
         }
     }
 }
     \end{js}
-    \item 通过\verb|vm.$watch|监视
+    \item 通过\verb|vm.$watch|侦听
     \begin{js}
 vm.$watch('isHot', {
     immediate: true,
     handler(newValue, oldValue) { 
-        console.log('isHot被修改了', newValue, oldValue)
+        console.log('isHot was modified', newValue, oldValue)
     }
 })      
     \end{js}
@@ -170,7 +170,7 @@ Vue中的watch默认不监测对象内部值的改变（一层、最外层），
 
 Vue自身可以监测对象内部值的改变，但Vue提供的watch默认不可以，使用watch时根据数据具体结构，决定是否使用深度监测。
 
-监视多层级中某个属性的变化:
+侦听多层级中某个属性的变化:
 \begin{js}
 "numbers.a": {
     handler() {
@@ -179,7 +179,7 @@ Vue自身可以监测对象内部值的改变，但Vue提供的watch默认不可
 }
 \end{js}
 
-监测层级中任一属性值的改变：
+侦听层级中任一属性值的改变：
 \begin{js}
 numbers: {
     deep: true,
@@ -188,3 +188,188 @@ numbers: {
     }
 }
 \end{js}
+
+如果没有深层次的参数，那么侦听函数可以简写：
+\begin{js}
+isHot(newValue, oldValue) {
+    console.log('isHot was modified', newValue, oldValue)
+},
+\end{js}
+
+computed与watch的对比：
+\begin{enumerate}
+    \item computed能完成的功能，watch都能完成
+    \item watch能完成的功能，computed不一定能够完成，比如watch可以执行异步操作，而computed不能执行。
+\end{enumerate}
+
+两个重要的原则：
+\notes{
+    \begin{enumerate}
+        \item 所有被Vue管理的函数，最好写成普通函数，这样this的指向才是vm或组件实例对象；
+        \item 所有不被Vue管理的函数（定时器的回调函数、Ajax的回调函数等），最好写成箭头函数，这样this的指向才是vm或者组件实例对象。
+    \end{enumerate}
+}
+
+\section{绑定样式}
+
+\subsection{绑定class样式}
+字符串写法：样式的类名不确定，需要动态指定，但是其个数是确定的，仅追加一个样式值。
+\begin{html}
+<div class="basic" :class="mood" @click="changeStyle">{{ mood  }}</div>
+\end{html}
+
+数组写法：要绑定的样式个数与名称均不确定。
+\begin{html}
+<div class="basic" :class="moodArr">{{ mood }}</div>
+\end{html}
+
+对象写法：要绑定的样式个数确定、名字也确定，但是动态决定用不用。
+\begin{html}
+<div class="basic" :class="moodObj">{{ mood }}</div>
+\end{html}
+\subsection{绑定style样式}
+可以使用对象或者数组进行样式的绑定，但是实际中使用的不多。
+
+\begin{html}
+<div class="basic" :style="styleObj">{{ mood }}</div>
+<br>
+<div class="basic" :style="[styleObj, styleObj2]">{{ mood }}</div>
+<br>
+<div class="basic" :style="styleArr">{{ mood }}</div>
+\end{html}
+
+\begin{js}
+fontSize: 40,
+    styleObj: {
+        fontSize: '40px',
+        color: 'red',
+    },
+    styleObj2: {
+        backgroundColor: 'orange'
+    },
+    styleArr: [
+    {
+        fontSize: '40px',
+        color: 'red',
+    },
+    {
+        backgroundColor: 'orange'
+    }
+]
+\end{js}
+
+\section{条件渲染}
+\verb|v-show|与\verb|v-if|都可以实现条件渲染，但是\verb|v-if|控制的组件节点直接不存在，隐藏的较为彻底。两种都可以使用表达式、布尔值以及Vue管理的属性值作为控制显示的条件。
+
+\begin{html}
+<h1 v-show='showAttribute'>Hello, {{ name }}</h1>
+<h1 v-show='true'>Hello, {{ name }}</h1>
+<h1 v-show='1 === 3'>Hello, {{ name }}</h1>
+<hr>
+<h1 v-if='1 === 3'>Hello, {{ name }}</h1>
+<h1 v-if='true'>Hello, {{ name }}</h1>
+<h1 v-if='showAttribute'>Hello, {{ name }}</h1>
+\end{html}
+
+\verb|v-if|适用于切换频率较低的场景、不展示的DOM元素直接被移除，其余\verb|v-else-if|使用时不能被打断，需要联合使用，可以配合\verb|template|使用。
+
+\verb|v-show|适用于切换频率较高的场景，不展示的DOM元素不会被移除，仅仅是使用样式隐藏掉。
+
+\section{列表渲染}
+列表的渲染可以使用\verb|v-for|指令，其语法格式为：
+
+\verb|v-for="(item, index)" in Object/Array/String/Numbers :key="index"|
+
+\subsection{key的作用与原理}
+\textbf{面试题：react、vue中的key有什么作用？（key的内部原理）}
+
+\begin{enumerate}
+    \item 虚拟DOM中key的作用：key是虚拟DOM对象的标识，当数据发生变化时，Vue会根据【新数据】生成【新的虚拟DOM】, 随后Vue进行【新虚拟DOM】与【旧虚拟DOM】的差异比较，比较规则如下：
+    \begin{enumerate}
+        \item 如果旧虚拟DOM中找到了与新虚拟DOM相同的key，则若虚拟DOM中内容没变, 直接使用之前的真实DOM！，否则生成新的真实DOM，随后替换掉页面中之前的真实DOM。
+        \item 如果旧虚拟DOM中未找到与新虚拟DOM相同的key，则创建新的真实DOM，随后渲染到到页面。
+    \end{enumerate}
+    \item 用index作为key可能会引发的问题：
+    \begin{enumerate}
+        \item 若对数据进行逆序添加、逆序删除等破坏顺序操作，则会产生没有必要的真实DOM更新（界面效果没问题, 但效率低）。
+        \item 如果结构中还包含输入类的DOM会产生错误DOM更新（界面有问题）。
+    \end{enumerate}
+    \item 开发中如何选择key?
+    \begin{enumerate}
+        \item 最好使用每条数据的唯一标识作为key, 比如id、手机号、身份证号、学号等唯一值。
+        \item 如果不存在对数据的逆序添加、逆序删除等破坏顺序操作，仅用于渲染列表用于展示，使用index作为key是没有问题的。
+    \end{enumerate}
+\end{enumerate}
+\subsection{列表过滤}
+对于一串字符串，使用\verb|indexOf|搜索，直接搜索空字符串也是可以返回结果的。
+
+\begin{js}
+watch: {
+    keyWord: {
+        immediate: true,
+        handler(val) {
+            this.filterPersonArr = this.personArr.filter((value) => {
+                return value.name.indexOf(val) !== -1
+            })
+        }
+    }
+}
+\end{js}
+
+对于这个功能，计算属性也可以实现，相比之下更加简单：
+
+\begin{js}
+computed: {
+    filterPersons() {
+        return this.personArr.filter((value) => {
+            return value.name.indexOf(this.keyWord) !== -1
+        })
+    }
+}
+\end{js}
+
+\subsection{列表排序}
+\begin{js}
+computed: {
+    filterPersons() {
+        const arr = this.personArr.filter((value) => {
+            return value.name.indexOf(this.keyWord) !== -1
+        })
+        if (this.sortType) {
+            arr.sort((p1, p2) => {
+                return this.sortType === 1 ? p1.age - p2.age : p2.age - p1.age
+            })
+        }
+        return arr
+    }
+}
+\end{js}
+\subsection{数据监测}
+vue会监视data中所有层次的数据。对对象和数组的数据监视有所不同。
+
+监视对象中的数据，通过setter实现监视，且要在new Vue时就传入要监测的数据：
+\begin{enumerate}
+    \item 对象中后追加的属性，Vue默认不做响应式处理
+    \item 如需给后添加的属性做响应式，请使用如下API：
+    \begin{enumerate}
+        \item \verb|Vue.set(target，propertyName/index，value)|
+        \item \verb|vm.$set(target，propertyName/index，value)|
+    \end{enumerate}
+\end{enumerate}
+
+监视数组中的数据，通过包裹数组更新元素的方法实现，本质就是做了两件事：
+\begin{enumerate}
+    \item 调用原生对应的方法对数组进行更新
+    \item 重新解析模板，进而更新页面
+    \item 在Vue修改数组中的某个元素一定要用如下方法：
+    \begin{enumerate}
+        \item push()、pop()、shift()、unshift()、splice()、sort()、reverse()
+        \item \verb|Vue.set()| 或 \verb|vm.$set()|
+    \end{enumerate}
+\end{enumerate}
+
+\warning{
+    Vue.set()和vm.\$set()不能给vm或vm的根数据对象 添加属性
+}
+
+\section{表单数据收集}
