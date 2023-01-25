@@ -1,3 +1,11 @@
 echartsFront/.vscode/settings.json
 _minted-main
 main.synctex.gz
+.aux
+.log
+.toc
+.out
+Tex/main.aux
+Tex/main.aux
+Tex/main.log
+Tex/Vue2ToVue3Ch01.aux
