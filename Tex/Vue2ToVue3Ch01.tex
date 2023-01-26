@@ -344,7 +344,7 @@ computed: {
     }
 }
 \end{js}
-\subsection{数据监测}
+\subsection{数据监测\ding{72}\ding{72}\ding{72}\ding{72}}
 vue会监视data中所有层次的数据。对对象和数组的数据监视有所不同。
 
 监视对象中的数据，通过setter实现监视，且要在new Vue时就传入要监测的数据：
@@ -373,3 +373,19 @@ vue会监视data中所有层次的数据。对对象和数组的数据监视有�
 }
 
 \section{表单数据收集}
+对于表单搜集的数据，有三种主要的区别：
+\begin{itemize}
+\item \verb|<input type="text">|，输入文本，则v-model收集的是value值，用户输入的直接是value值；
+\item \verb|<input type="radio">|，单选框，则v-model收集的是value值，但是需要给每个标签指定value值；
+\item \verb|<input type="text">|，复选框，如果没有配置value的属性，那么收集的是复选框是否被选中（i.e. checked值，勾选或者没勾选，布尔值）。如果配置了value的属性，那么如果v-model的初始值是非数组，收集的就是checked值，数组情况下则收集的是有value组成的数组。
+\end{itemize}
+
+\notes{
+    v-model有三个事件修饰符：
+    \begin{dinglist}{42}
+        \item lazy：失去焦点再收集数据（可用于文本框textarea的数据收集）
+        \item number：输入字符串转为有效的数字；
+        \item trim：输入首位空格过滤；
+    \end{dinglist}
+}
+\section{过滤器}
