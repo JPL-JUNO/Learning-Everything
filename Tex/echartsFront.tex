@@ -204,6 +204,25 @@ ECharts 已经内置好了加载数据的动画, 我们只需要在合适的时�
     \item 隐藏加载动画\verb|myChart.hideLoading()|
 \end{itemize}
 
-\subsubsection{增量动画}
-\subsubsection{动画的配置}
+\subsubsection{增量动画} setOption可以设置多次，新的option和旧的option的关系并不是相互壶盖的区别，是相互整合的关系，在设置新的option的时候，只需要考虑到变化的部分就可以了。
+
+所有数据的更新都是通过setOption实现的，不需要考虑数据的具体变化位置，ECharts会找到两组数据之间的差异，然后通过合适的动画去表现数据的变化。
+\subsubsection{动画的配置} 
+\begin{itemize}
+    \item 开启动画，\verb|animation: true|
+    \item 动画时长（毫秒单位）：\verb|animationDuration: 7000|，也可以接收一个回调参数
+    \item 缓动动画：\verb|animationEasing: 'linear'|
+    \item 动画阈值：\verb|animationThreshold: 10|，单种形式的元素数量大于这个阈值时会关闭动画
+\end{itemize}
 \subsection{交互API}
+\subsubsection{全局echarts对象}
+全局echarts对象是引入echarts.js文件之后就可以直接使用的。
+
+\begin{itemize}
+    \item init：初始化echarts实例对象，可以用来使用主题
+    \item registerTheme：
+    \item registerMap
+    \item connect
+\end{itemize}
+\subsubsection{echartsInstance对象}
+echartsInstance对象是通过\verb|echarts.init|方法调用之后得到的。

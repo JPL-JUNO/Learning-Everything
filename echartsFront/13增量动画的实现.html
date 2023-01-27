@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>增量动画的实现</title>
+    <script src="lib/echarts.min.js"></script>
+</head>
+
+<body>
+    <div style="width:600px;height:400px"></div>
+    <button id="modify">修改数据</button>
+    <button id="add">增加数据</button>
+</body>
+<script>
+    var mCharts = echarts.init(document.querySelector("div"))
+    var xDataArr = ['张三', '李四', '王五', '闰土', '小明', '茅台', '二妞', '大强']
+    var yDataArr = [88, 92, 63, 77, 94, 80, 72, 86]
+    var option = {
+        // 动画配置项，默认为开启动画
+        animation: true,
+        animationDuration: function (arg) {
+            return (arg + 1) * 200
+        },
+        animationEasing: 'bounceOut',
+        animationThreshold: 10,
+        xAxis: {
+            type: 'category',
+            data: xDataArr
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                type: 'bar',
+                data: yDataArr,
+                markPoint: {
+                    data: [
+                        {
+                            type: 'max', name: '最大值'
+                        },
+                        {
+                            type: 'min', name: '最小值'
+                        }
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {
+                            type: 'average', name: '平均值'
+                        }
+                    ]
+                },
+                label: {
+                    show: true,
+                    rotate: 60
+                },
+                barWidth: '30%'
+            }
+        ]
+    }
+    mCharts.setOption(option)
+
+    var btnModify = document.querySelector('#modify')
+    btnModify.onclick = function () {
+        var newYDataArr = [68, 22, 99, 77, 94, 80, 72, 86]
+        // setOption可以设置多次，新的Option和旧的option的关系并不是相互壶盖的区别，是相互整合的关系
+        var option = {
+            series: [{ data: newYDataArr, }]
+        }
+        mCharts.setOption(option)
+    }
+    var btnAdd = document.querySelector('#add')
+    btnAdd.onclick = function () {
+        xDataArr.push('小明')
+        yDataArr.push(90)
+        var option = {
+            xAxis: {
+                data: xDataArr
+            },
+            series: [{ data: yDataArr }]
+        }
+        mCharts.setOption(option)
+    }
+</script>
+
+</html>
