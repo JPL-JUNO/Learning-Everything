@@ -222,7 +222,39 @@ ECharts 已经内置好了加载数据的动画, 我们只需要在合适的时�
     \item init：初始化echarts实例对象，可以用来使用主题
     \item registerTheme：
     \item registerMap
-    \item connect
+    \item connect: 一个页面中可以有多个独立的图表，每个图表对应一个echarts实例对象，connect可以实现多图关联，传入联动目标为echarts实例对象，支持数组，实现保存图片的自动拼接、刷新按钮、重置按钮、提示框联动、图里选择、数据范围修改等。
 \end{itemize}
 \subsubsection{echartsInstance对象}
 echartsInstance对象是通过\verb|echarts.init|方法调用之后得到的。
+
+\chapter{后台项目}
+\section{Koa2快速上手}
+\begin{enumerate}
+    \item 检查Node的环境（\verb|cmd node -v|)
+    \item 安装Koa（\verb|cmd npm init -y|可以用来维护一些第三方包的信息、\verb|cmd npm install koa|）
+    \item 创建并编写app.js文件
+    \begin{enumerate}
+        \item 创建Koa对象
+        \item 编写响应函数（中间件）
+        \item 监听端口
+    \end{enumerate}
+    \item 启动服务器（\verb|cmd node app.js|）
+\end{enumerate}
+
+\subsection{中间件的特点}
+Koa对象通过use方法加入一个中间件（函数），中间件的执行顺序符合洋葱模型。内层中间件能否执行取决于外层中间件的next函数是否被调用。调用next()函数得到的是Promise对象。
+
+\begin{js}
+app.use(async (ctx, next)=>{
+    const msg = await next();
+    // codes you want to do
+})
+\end{js}
+
+\section{后台项目}
+后台项目的目标包括计算服务器处理请求的总耗时、在响应头上加上相应内容的mime类型、根据URL读取指定目录下的文件内容。
+\warning{
+    本项目没有配置数据库，因此需要读取文件来作为数据的来源。
+}
+
+项目准备-总耗时中间件-
