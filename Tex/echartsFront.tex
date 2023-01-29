@@ -258,3 +258,42 @@ app.use(async (ctx, next)=>{
 }
 
 项目准备-总耗时中间件-
+
+\subsection{允许跨域}
+实际中是通过Ajax访问服务器，遵循同源策略（同协议、同域名、同端口），比较当前页面的地址和Ajax获取数据的地址。应该设置响应头：
+\begin{js}
+app.use(async (ctx, next)=>{
+    ctx.set("Access-Control-Allow-Origin", "*");
+    ctx.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+    await next();
+})
+\end{js}
+
+\chapter{前端项目}
+\begin{enumerate}
+    \item 前端项目准备
+    \begin{enumerate}
+        \item vue-cli搭建项目
+        \item 删除无关代码
+        \item 静态资源的引入
+        \item 项目的基本配置
+        \item 全局echarts对象的挂载
+        \item axios的封装与挂载
+    \end{enumerate}
+    \item 单独图表组件的开发
+    \begin{enumerate}
+        \item 商家销售统计（横向柱状图）
+        \item 销量趋势图表（折线图）
+        \item 商家分布模块（地图与散点图）
+        \item 销量排行模块（柱状图）
+        \item 热销商品占比模块（饼图）
+        \item 库存与销量模块（圆环饼图）
+    \end{enumerate}
+    \item WebSocket的引入
+    \item 细节处理
+\end{enumerate}
+
+\section{前端项目准备}
+\verb|npm install @vue/cli -g|
+
+\verb|vue create|
