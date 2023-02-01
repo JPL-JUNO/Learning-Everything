@@ -1,13 +1,18 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import SellerPage from "@/views/sellerPage";
+import sellerPage from "@/views/sellerPage";
+import trendPage from "@/views/trendPage";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/sellerPage",
-    component: SellerPage,
+    component: sellerPage,
+  },
+  {
+    path: "/trendPage",
+    component: trendPage,
   },
 ];
 
