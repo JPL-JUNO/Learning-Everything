@@ -1,20 +1,19 @@
 <template>
   <div class="com-page">
-    <trend></trend>
+    <Rank></Rank>
   </div>
 </template>
 
 <script>
-import Trend from "@/components/Trend.vue";
+import Rank from "@/components/Rank.vue";
 export default {
   data() {
     return {};
   },
   methods: {},
   components: {
-    trend: Trend,
+    Rank: Rank,
   },
 };
 </script>
-
-<style lang="less" scoped></style>
+<style></style>

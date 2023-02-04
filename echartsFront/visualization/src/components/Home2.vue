@@ -49,8 +49,8 @@ body {
   justify-content: center;
   background-image: linear-gradient(
     94.3deg,
-    rgba(26, 33, 64, 1) 10.9%,
-    rgba(81, 82, 115, 1) 87.1%
+    rgb(101, 124, 226) 10.9%,
+    rgb(206, 122, 178) 87.1%
   );
   overflow: hidden;
 }

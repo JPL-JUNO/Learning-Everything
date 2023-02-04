@@ -1,20 +1,19 @@
 <template>
   <div class="com-page">
-    <trend></trend>
+    <Hot></Hot>
   </div>
 </template>
 
 <script>
-import Trend from "@/components/Trend.vue";
+import Hot from "@/components/Hot.vue";
 export default {
   data() {
     return {};
   },
   methods: {},
   components: {
-    trend: Trend,
+    Hot: Hot,
   },
 };
 </script>
-
-<style lang="less" scoped></style>
+<style></style>
