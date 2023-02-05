@@ -7,6 +7,7 @@ import homePage2 from "@/views/homePage2";
 import mapPage from "@/views/mapPage";
 import rankPage from "@/views/rankPage";
 import hotPage from "@/views/hotPage";
+import stockPage from "@/views/stockPage.vue";
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,10 @@ const routes = [
   {
     path: "/hotPage",
     component: hotPage,
+  },
+  {
+    path: "/stockPage",
+    component: stockPage,
   },
 ];
 
